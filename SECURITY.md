@@ -20,3 +20,5 @@ As a cybersecurity platform, we hold our design and future implementation to the
    - Proposed mitigation strategy or design modifications
 
 We will respond within 48 hours to coordinate a responsible disclosure and update our threat model documents.
+
+n
