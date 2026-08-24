@@ -1,0 +1,20 @@
+{
+  "name": "securex-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SecureX - Security Operations & Threat Investigation Platform",
+  "workspaces": [
+    "backend",
+    "frontend",
+    "sdk",
+    "simulator"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=backend\" \"npm run dev --workspace=frontend\"",
+    "build": "npm run build --workspaces",
+    "simulate": "npm run simulate --workspace=simulator"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

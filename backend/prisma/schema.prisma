@@ -1,0 +1,135 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model ApiKey {
+  id          String   @id @default(uuid())
+  key         String   @unique
+  name        String
+  tenantId    String   @default("default-tenant")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model TelemetryEvent {
+  id            String   @id @default(uuid())
+  eventId       String   @unique
+  tenantId      String   @default("default-tenant")
+  timestamp     DateTime
+  category      String
+  eventType     String
+  outcome       String
+  severity      String
+  sourceService String
+  sourceIp      String?
+  destinationIp String?
+  userId        String?
+  username      String?
+  resourceType  String?
+  resourceName  String?
+  action        String?
+  metadataJson  String?  // JSON serialized
+  rawPayload    String   // Full raw JSON
+  createdAt     DateTime @default(now())
+
+  @@index([timestamp])
+  @@index([eventType])
+  @@index([sourceIp])
+  @@index([userId])
+}
+
+model DetectionRule {
+  id             String   @id @default(uuid())
+  ruleId         String   @unique
+  name           String
+  description    String
+  category       String
+  severity       String   // info, low, medium, high, critical
+  ruleType       String   // threshold, pattern, sequence
+  mitreTactic    String   // Initial Access, Credential Access, etc.
+  mitreTechnique String   // T1110, T1078, etc.
+  conditionJson  String   // JSON parameters: eventTypes, filter, windowSeconds, thresholdCount
+  windowSeconds  Int      @default(60)
+  thresholdCount Int      @default(1)
+  isEnabled      Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Alert {
+  id             String    @id @default(uuid())
+  alertId        String    @unique
+  ruleId         String
+  ruleName       String
+  severity       String
+  mitreTactic    String
+  mitreTechnique String
+  description    String
+  entityKey      String    // e.g. "ip:192.168.1.50" or "user:admin"
+  detailsJson    String
+  timestamp      DateTime  @default(now())
+  incidentId     String?
+  incident       Incident? @relation(fields: [incidentId], references: [id])
+
+  @@index([entityKey])
+  @@index([timestamp])
+  @@index([incidentId])
+}
+
+model Incident {
+  id           String             @id @default(uuid())
+  incidentId   String             @unique
+  title        String
+  severity     String             // low, medium, high, critical
+  status       String             @default("OPEN") // OPEN, INVESTIGATING, CONTAINED, RESOLVED
+  summary      String
+  entityKey    String             // primary correlated entity (IP or user)
+  mitreTactics String             // comma-separated list of tactics observed
+  alertsCount  Int                @default(0)
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  alerts       Alert[]
+  evidences    IncidentEvidence[]
+  notes        IncidentNote[]
+
+  @@index([status])
+  @@index([severity])
+  @@index([entityKey])
+}
+
+model IncidentEvidence {
+  id         String   @id @default(uuid())
+  incidentId String
+  type       String   // ip, user_account, log_event, file_hash, url
+  title      String
+  value      String
+  notes      String?
+  addedAt    DateTime @default(now())
+  incident   Incident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+
+  @@index([incidentId])
+}
+
+model IncidentNote {
+  id         String   @id @default(uuid())
+  incidentId String
+  author     String   @default("SOC Analyst")
+  content    String
+  createdAt  DateTime @default(now())
+  incident   Incident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+
+  @@index([incidentId])
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  action    String
+  actor     String
+  details   String
+  createdAt DateTime @default(now())
+}

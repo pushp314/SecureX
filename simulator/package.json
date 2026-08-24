@@ -1,0 +1,21 @@
+{
+  "name": "securex-simulator",
+  "version": "1.0.0",
+  "description": "Adversary Campaign & Telemetry Generator for SecureX",
+  "main": "dist/run.js",
+  "scripts": {
+    "simulate": "tsx src/run.ts",
+    "simulate:bruteforce": "tsx src/run.ts --scenario=bruteforce",
+    "simulate:ransomware": "tsx src/run.ts --scenario=ransomware",
+    "simulate:apt": "tsx src/run.ts --scenario=apt",
+    "simulate:exfiltration": "tsx src/run.ts --scenario=exfiltration"
+  },
+  "dependencies": {
+    "@securex/sdk-node": "*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.4",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
+  }
+}

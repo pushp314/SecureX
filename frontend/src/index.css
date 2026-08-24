@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-main: #090d16;
+    --bg-card: #0f172a;
+    --bg-card-subtle: #131d31;
+    --border-subtle: rgba(51, 65, 85, 0.5);
+    --border-hover: rgba(99, 102, 241, 0.4);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+  }
+
+  body {
+    background-color: #070a12;
+    color: #f1f5f9;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Enterprise Minimalism (SaaS-Pro) Card Surfaces */
+.saas-card {
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(51, 65, 85, 0.5);
+  border-radius: 1rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.saas-card:hover {
+  border-color: rgba(99, 102, 241, 0.35);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.3), 0 0 15px -3px rgba(99, 102, 241, 0.08);
+}
+
+.saas-card-flat {
+  background: #0b1220;
+  border: 1px solid rgba(51, 65, 85, 0.4);
+  border-radius: 0.75rem;
+}
+
+/* Subtle Enterprise Glows */
+.glow-accent {
+  box-shadow: 0 0 16px -2px rgba(99, 102, 241, 0.25);
+}
+
+.glow-rose {
+  box-shadow: 0 0 16px -2px rgba(244, 63, 94, 0.25);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 16px -2px rgba(16, 185, 129, 0.25);
+}
+
+/* Crisp Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
